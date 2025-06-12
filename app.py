@@ -2,6 +2,8 @@ from flask import Flask, jsonify
 import os
 import psycopg2
 
+print("🔐 Loaded DB_PASS from env:", os.getenv("DB_PASS"))
+
 app = Flask(__name__)
 
 @app.route('/hello')
@@ -19,4 +21,6 @@ def hello():
         return jsonify({"error": str(e)})
 
 if __name__ == '__main__':
-    app.run()
+    port = int(os.environ.get("PORT", 8000))  # Azure will inject PORT env var
+    app.run(host='0.0.0.0', port=port)
+
