@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY_NAME: gururacr.azurecr.io
+  REGISTRY_NAME: gururacr01.azurecr.io
   IMAGE_NAME: se4453midterm
   RESOURCE_GROUP: se4453_rg
   APP_SERVICE_NAME: se4453final
