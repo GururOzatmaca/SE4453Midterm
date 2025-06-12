@@ -21,7 +21,7 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose ports: 22 for SSH, 8000 for Python web server
-EXPOSE 22 8000
+EXPOSE 80
 
 # Copy and allow running the init script
 COPY init.sh /init.sh
