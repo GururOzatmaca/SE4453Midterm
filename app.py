@@ -14,6 +14,7 @@ def hello():
             dbname=os.environ.get("DB_NAME"),
             user=os.environ.get("DB_USER"),
             password=os.environ.get("DB_PASS"),
+            sslmode='require',
             connect_timeout=3,
         )
         return jsonify({"message": "Connected to PostgreSQL successfully!"})
