@@ -9,7 +9,7 @@ on:
 env:
   REGISTRY_NAME: gururacr.azurecr.io
   IMAGE_NAME: se4453midterm
-  RESOURCE_GROUP: se4453fr_rg
+  RESOURCE_GROUP: se4453_rg
   APP_SERVICE_NAME: se4453final
 
 jobs:
