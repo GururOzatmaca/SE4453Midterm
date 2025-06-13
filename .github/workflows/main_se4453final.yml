@@ -9,24 +9,32 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
     - uses: actions/checkout@v2
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
     - name: Log in to registry
-      uses: docker/login-action@v2
+      uses: azure/docker-login@v1
       with:
-        registry: gururacr01.azurecr.io
-        username: ${{ secrets.AzureAppService_ContainerUsername_6bda9a74b9e9489e8802b849da8cc8d1 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_f2a30aa1984a4cf495c0d2f04a1b048c }}
+        login-server: se4453acr1.azurecr.io
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: gururacr01.azurecr.io/se4453midterm:${{ github.sha }}
+        tags: se4453acr1.azurecr.io/se4453midterm:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -41,6 +49,6 @@ jobs:
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:
-        app-name: se4453final
+        app-name: se4453midterm
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_de7eba4cc07e49fea0395e5488b76b89 }}
-        images: gururacr01.azurecr.io/se4453midterm:${{ github.sha }}
+        images: se4453acr1.azurecr.io/se4453midterm:${{ github.sha }}
