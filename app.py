@@ -2,8 +2,6 @@ from flask import Flask, jsonify
 import os
 import psycopg2
 
-print("🔐 Loaded DB_PASS from env:", os.getenv("DB_PASS"))
-
 app = Flask(__name__)
 
 @app.route('/hello')

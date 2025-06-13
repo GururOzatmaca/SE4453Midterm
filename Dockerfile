@@ -4,29 +4,30 @@ FROM python:3.10-slim
 # Install SSH server
 RUN apt-get update && apt-get install -y openssh-server
 
-# Create SSH directory and set root password (demo use only!)
-RUN mkdir /var/run/sshd && echo 'root:Azure123!' | chpasswd
+# Set root password (demo/testing only — DO NOT use in production)
+RUN echo 'root:Azure123!' | chpasswd
 
-# Allow root login
+# Enable root SSH login + password authentication
 RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
     sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
 
-# Set work directory
+# Create SSH runtime directory
+RUN mkdir /var/run/sshd
+
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy app code
+# Copy all project files into the container
 COPY . .
 
-# Install Python dependencies
+# Install required Python packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose ports: 22 for SSH, 8000 for Python web server
-EXPOSE 80
+# Make init script executable
+RUN chmod +x ./init.sh
 
-# Copy and allow running the init script
-COPY init.sh /init.sh
-RUN chmod +x /init.sh
+# Expose Flask and SSH ports
+EXPOSE 80 22
 
-# Start SSH and app
-CMD ["/init.sh"]
-
+# Start SSH and the Flask app when container starts
+CMD ["./init.sh"]
